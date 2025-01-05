@@ -18,6 +18,9 @@
             color: #fff;
             padding: 20px;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         header h1 {
@@ -31,6 +34,7 @@
             gap: 20px;
             background-color: #ff85c1;
             padding: 10px;
+            flex-wrap: wrap;
         }
 
         nav a {
@@ -187,9 +191,23 @@
             margin: 0;
         }
 
-        #paypal-button-container {
-            text-align: center;
-            margin-top: 20px;
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #ff69b4;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            animation: fadeinout 3s;
+        }
+
+        @keyframes fadeinout {
+            0% { opacity: 0; }
+            10%, 90% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         .delivery {
@@ -236,144 +254,6 @@
     </nav>
     <div class="hero">
         <h1>Exprimez votre style</h1>
-        <p>Découvrez notre collection de vêtements et accessoires tendance</p>
-        <button class="cta-button">Découvrir les collections</button>
     </div>
-    <section class="products">
-        <div class="product">
-            <img src="images/u_s_sandals.jpg" alt="U.S Sandals">
-            <h3>U.S Sandals</h3>
-            <p>Prix: 20,00 €</p>
-            <button onclick="addToCart('U.S Sandals', 20)">Ajouter au panier</button>
-        </div>
-        <div class="product">
-            <img src="images/us.JPG" alt="Sandales Violetta">
-            <h3>Sandales Violetta</h3>
-            <p>Prix: 15,00 €</p>
-            <button onclick="addToCart('Sandales Violetta', 15)">Ajouter au panier</button>
-        </div>
-        <div class="product">
-            <img src="images/uss.JPG" alt="Sandales promenade">
-            <h3>Sandales promenade</h3>
-            <p>Prix: 15,00 €</p>
-            <button onclick="addToCart('Sandales promenade', 15)">Ajouter au panier</button>
-        </div>
-        <div class="product">
-            <img src="images/usss.JPG" alt="Sandales promenade rose">
-            <h3>Sandales promenade rose</h3>
-            <p>Prix: 15,00 €</p>
-            <button onclick="addToCart('Sandales promenade rose', 15)">Ajouter au panier</button>
-        </div>
-    </section>
-
-    <section class="cart" id="cart">
-        <h2>Votre Panier</h2>
-        <ul class="cart-items" id="cart-items">
-            <!-- Les articles du panier seront ajoutés ici -->
-        </ul>
-        <p class="cart-total" id="cart-total">Total : 0,00 €</p>
-    </section>
-
-    <section class="delivery">
-        <h2>Adresse de livraison</h2>
-        <form id="delivery-form">
-            <label for="name">Nom complet :</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="address">Adresse :</label>
-            <input type="text" id="address" name="address" required>
-
-            <label for="city">Ville :</label>
-            <input type="text" id="city" name="city" required>
-
-            <label for="postal-code">Code postal :</label>
-            <input type="text" id="postal-code" name="postal-code" required>
-
-            <label for="phone">Téléphone :</label>
-            <input type="text" id="phone" name="phone" required>
-        </form>
-    </section>
-
-    <div id="paypal-button-container"></div>
-
-    <footer id="contact">
-        <p>&copy; 2025 Women's Heaven by Ismaila Diallo. Tous droits réservés.</p>
-        <p>Contact : <a href="mailto:dialloismailajoseph@gmail.com">dialloismailajoseph@gmail.com</a></p>
-    </footer>
-
-    <script src="https://www.paypal.com/sdk/js?client-id=AYxqfR2mT-EkZo83aGeUnV6YiSDZ8cKGWpIX-CQW8KzrRtK-B4PSDkBq-qrZi4VJKpzuiG23w4FKjtpX&currency=EUR"></script>
-    <script>
-        const cart = [];
-
-        function addToCart(productName, price) {
-            const product = { name: productName, price: price };
-            cart.push(product);
-            updateCart();
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartTotalContainer = document.getElementById('cart-total');
-
-            cartItemsContainer.innerHTML = '';
-
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                const cartItem = document.createElement('li');
-                cartItem.classList.add('cart-item');
-                cartItem.innerHTML = `${item.name} - ${item.price.toFixed(2)} € <button onclick="removeFromCart(${index})">Supprimer</button>`;
-                cartItemsContainer.appendChild(cartItem);
-                total += item.price;
-            });
-
-            cartTotalContainer.innerText = `Total : ${total.toFixed(2)} €`;
-        }
-
-        paypal.Buttons({
-            createOrder: function(data, actions) {
-                const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
-
-                const deliveryForm = document.getElementById('delivery-form');
-                const name = deliveryForm.querySelector('#name').value;
-                const address = deliveryForm.querySelector('#address').value;
-                const city = deliveryForm.querySelector('#city').value;
-                const postalCode = deliveryForm.querySelector('#postal-code').value;
-                const phone = deliveryForm.querySelector('#phone').value;
-
-                if (!name || !address || !city || !postalCode || !phone) {
-                    alert('Veuillez remplir toutes les informations de livraison.');
-                    return;
-                }
-
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: { value: total },
-                        shipping: {
-                            name: { full_name: name },
-                            address: {
-                                address_line_1: address,
-                                admin_area_2: city,
-                                postal_code: postalCode,
-                                country_code: "FR"
-                            }
-                        }
-                    }]
-                });
-            },
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    alert('Paiement et livraison validés pour ' + details.payer.name.given_name);
-                    cart.length = 0; // Vider le panier après paiement
-                    updateCart();
-                });
-            }
-        }).render('#paypal-button-container');
-    </script>
 </body>
 </html>
