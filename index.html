@@ -147,29 +147,35 @@
             <img src="images/u_s_sandals.jpg" alt="U.S Sandals">
             <h3>U.S Sandals</h3>
             <p>Prix: 20,00 €</p>
-            <button>Ajouter au panier</button>
+            <button onclick="addToCart('U.S Sandals', 20)">Ajouter au panier</button>
         </div>
         <div class="product">
-            <img src="images/us.JPG" alt="Violetta">
-            <h3>Violetta</h3>
+            <img src="images/us.JPG" alt="Sandales Violetta">
+            <h3>Sandales marron</h3>
             <p>Prix: 15,00 €</p>
-            <button>Ajouter au panier</button>
+            <button onclick="addToCart('Sandales Violetta', 15)">Ajouter au panier</button>
         </div>
         <div class="product">
             <img src="images/uss.JPG" alt="Sandales promenade">
             <h3>Sandales promenade</h3>
             <p>Prix: 15,00 €</p>
-            <button>Ajouter au panier</button>
+            <button onclick="addToCart('Sandales promenade', 15)">Ajouter au panier</button>
         </div>
         <div class="product">
-            <img src="images/usss.JPG" alt="andales promenade rose">
+            <img src="images/usss.JPG" alt="Sandales promenade rose">
             <h3>Sandales promenade rose</h3>
             <p>Prix: 15,00 €</p>
-            <button>Ajouter au panier</button>
+            <button onclick="addToCart('Sandales promenade rose', 15)">Ajouter au panier</button>
         </div>
     </section>
     <footer>
-        <p>&copy; by ismaila diallo. Tous droits réservés.</p>
+        <p>&copy; 2025 Women's Heaven by Ismaila Diallo. Tous droits réservés.</p>
     </footer>
+
+    <script>
+        function addToCart(productName, price) {
+            alert(productName + ' a été ajouté au panier pour ' + price + ' €.');
+        }
+    </script>
 </body>
 </html>
