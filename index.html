@@ -113,6 +113,37 @@
             background-color: #ff85c1;
         }
 
+        .cart {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .cart h2 {
+            text-align: center;
+        }
+
+        .cart-items {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
         footer {
             text-align: center;
             padding: 20px;
@@ -122,6 +153,11 @@
 
         footer p {
             margin: 0;
+        }
+
+        #paypal-button-container {
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -168,14 +204,69 @@
             <button onclick="addToCart('Sandales promenade rose', 15)">Ajouter au panier</button>
         </div>
     </section>
+
+    <section class="cart" id="cart">
+        <h2>Votre Panier</h2>
+        <ul class="cart-items" id="cart-items">
+            <!-- Les articles du panier seront ajoutés ici -->
+        </ul>
+        <p class="cart-total" id="cart-total">Total : 0,00 €</p>
+        <div id="paypal-button-container"></div>
+    </section>
+
     <footer>
         <p>&copy; 2025 Women's Heaven by Ismaila Diallo. Tous droits réservés.</p>
     </footer>
 
+    <script src="https://www.paypal.com/sdk/js?client-id=TON_CLE_PUBLIC_PAYPAL&currency=EUR"></script>
     <script>
+        const cart = [];
+
         function addToCart(productName, price) {
-            alert(productName + ' a été ajouté au panier pour ' + price + ' €.');
+            const product = { name: productName, price: price };
+            cart.push(product);
+            updateCart();
         }
+
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalContainer = document.getElementById('cart-total');
+
+            // Vider le contenu actuel
+            cartItemsContainer.innerHTML = '';
+
+            let total = 0;
+
+            cart.forEach((item) => {
+                const cartItem = document.createElement('li');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `${item.name} - ${item.price.toFixed(2)} €`;
+                cartItemsContainer.appendChild(cartItem);
+                total += item.price;
+            });
+
+            cartTotalContainer.innerText = `Total : ${total.toFixed(2)} €`;
+        }
+
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: total
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert('Paiement effectué par ' + details.payer.name.given_name);
+                    cart.length = 0; // Vider le panier après paiement
+                    updateCart();
+                });
+            }
+        }).render('#paypal-button-container');
     </script>
 </body>
 </html>
