@@ -176,6 +176,38 @@
             margin-top: 10px;
         }
 
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
         footer {
             text-align: center;
             padding: 20px;
@@ -314,48 +346,57 @@
 
     <div id="paypal-button-container"></div>
 
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="success-modal">
+        <h2>Paiement validé</h2>
+        <p id="success-message">Merci pour votre achat !</p>
+        <button onclick="closeModal()">Fermer</button>
+    </div>
+
     <footer id="contact">
         <p>&copy; 2025 Women's Heaven by Ismaila Diallo. Tous droits réservés.</p>
-        <p>Contact : <a href="mailto:dialloismailajoseph@gmail.com">dialloismailajoseph@gmail.com</a></p>
+        <p>Contact : <a href="mailto:dialloismailajoseph@gmail.com" style="color: white;">dialloismailajoseph@gmail.com</a></p>
     </footer>
 
     <script src="https://www.paypal.com/sdk/js?client-id=AYxqfR2mT-EkZo83aGeUnV6YiSDZ8cKGWpIX-CQW8KzrRtK-B4PSDkBq-qrZi4VJKpzuiG23w4FKjtpX&currency=EUR"></script>
     <script>
-        const cart = [];
+        const cartState = {
+            items: [],
+            addItem(productName, price) {
+                this.items.push({ name: productName, price });
+                this.updateCartDisplay();
+            },
+            removeItem(index) {
+                this.items.splice(index, 1);
+                this.updateCartDisplay();
+            },
+            updateCartDisplay() {
+                const cartItemsContainer = document.getElementById('cart-items');
+                const cartTotalContainer = document.getElementById('cart-total');
+
+                cartItemsContainer.innerHTML = '';
+
+                let total = 0;
+
+                this.items.forEach((item, index) => {
+                    const cartItem = document.createElement('li');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `${item.name} - ${item.price.toFixed(2)} € <button onclick="cartState.removeItem(${index})">Supprimer</button>`;
+                    cartItemsContainer.appendChild(cartItem);
+                    total += item.price;
+                });
+
+                cartTotalContainer.innerText = `Total : ${total.toFixed(2)} €`;
+            }
+        };
 
         function addToCart(productName, price) {
-            const product = { name: productName, price: price };
-            cart.push(product);
-            updateCart();
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartTotalContainer = document.getElementById('cart-total');
-
-            cartItemsContainer.innerHTML = '';
-
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                const cartItem = document.createElement('li');
-                cartItem.classList.add('cart-item');
-                cartItem.innerHTML = `${item.name} - ${item.price.toFixed(2)} € <button onclick="removeFromCart(${index})">Supprimer</button>`;
-                cartItemsContainer.appendChild(cartItem);
-                total += item.price;
-            });
-
-            cartTotalContainer.innerText = `Total : ${total.toFixed(2)} €`;
+            cartState.addItem(productName, price);
         }
 
         paypal.Buttons({
             createOrder: function(data, actions) {
-                const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+                const total = cartState.items.reduce((sum, item) => sum + item.price, 0).toFixed(2);
 
                 const deliveryForm = document.getElementById('delivery-form');
                 const name = deliveryForm.querySelector('#name').value;
@@ -386,12 +427,30 @@
             },
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(details) {
-                    alert('Paiement et livraison validés pour ' + details.payer.name.given_name);
-                    cart.length = 0; // Vider le panier après paiement
-                    updateCart();
+                    showModal('Paiement et livraison validés pour ' + details.payer.name.given_name);
+                    cartState.items = [];
+                    cartState.updateCartDisplay();
                 });
             }
         }).render('#paypal-button-container');
+
+        function showModal(message) {
+            const modal = document.getElementById('success-modal');
+            const overlay = document.getElementById('modal-overlay');
+            const successMessage = document.getElementById('success-message');
+
+            successMessage.textContent = message;
+            modal.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('success-modal');
+            const overlay = document.getElementById('modal-overlay');
+
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+        }
     </script>
 </body>
 </html>
