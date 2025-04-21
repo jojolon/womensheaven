@@ -6,61 +6,86 @@
     <title>Women's Heaven - Boutique en Ligne</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Helvetica', 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #ffefba, #ffffff);
-            animation: gradientBG 6s infinite alternate;
+            background-color: #f9f9f9;
             color: #333;
         }
 
-        @keyframes gradientBG {
-            0% { background: linear-gradient(135deg, #ffefba, #ffffff); }
-            100% { background: linear-gradient(135deg, #ffd6a5, #ffefba); }
-        }
-
         header {
-            background-color: #ff69b4;
-            color: #fff;
+            background-color: #fff;
             padding: 20px;
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+            max-width: 200px;
+            margin: 0 auto;
         }
 
         .hero {
+            background: url('votre-image.jpg') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
             text-align: center;
-            padding: 40px;
-            background-color: #ffe6e6;
-            color: #ff69b4;
+            position: relative;
         }
 
-        .hero img {
-            max-width: 100%;
-            border-radius: 10px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+            z-index: 2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            z-index: 2;
         }
 
         .hero button {
             background-color: #ff69b4;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
-            font-size: 16px;
+            font-size: 1rem;
+            z-index: 2;
         }
 
         .products {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .products h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ff69b4;
+        }
+
+        .product-grid {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
             gap: 20px;
-            padding: 40px;
+            justify-content: center;
         }
 
         .product {
@@ -69,12 +94,18 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             padding: 20px;
-            width: 200px;
+            width: 250px;
         }
 
         .product img {
             max-width: 100%;
             border-radius: 10px;
+        }
+
+        .product h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            color: #333;
         }
 
         .product button {
@@ -84,40 +115,36 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
-            font-size: 14px;
+            font-size: 1rem;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Women's Heaven</h1>
+        <img src="votre-logo.png" alt="Logo Women's Heaven" class="logo">
     </header>
 
-    <div class="logo">
-        <img src="votre-logo.png" alt="Logo Women's Heaven">
-    </div>
-
     <div class="hero">
-        <h2>Exprimez votre style</h2>
-        <p>Découvrez notre collection de vêtements et accessoires pour toutes les occasions.</p>
-        <img src="votre-image.jpg" alt="Femme en tenue rose">
+        <h1>Exprimez votre style</h1>
+        <p>Découvrez notre collection exclusive pour toutes les occasions.</p>
         <button>Découvrir les collections</button>
     </div>
 
     <div class="products">
-        <div class="product">
-            <img src="claquettes.jpg" alt="Claquettes épaisse beige">
-            <h3>Claquettes épaisse beige</h3>
-            <button>Ajouter au panier</button>
+        <h2>Chaussures</h2>
+        <div class="product-grid">
+            <div class="product">
+                <img src="claquettes.jpg" alt="Claquettes épaisse beige">
+                <h3>Claquettes épaisse beige</h3>
+                <button>Ajouter au panier</button>
+            </div>
+            <div class="product">
+                <img src="violetta.jpg" alt="Violetta">
+                <h3>Violetta</h3>
+                <button>Ajouter au panier</button>
+            </div>
+            <!-- Ajoutez d'autres produits ici -->
         </div>
-        <div class="product">
-            <img src="violetta.jpg" alt="Violetta">
-            <h3>Violetta</h3>
-            <button>Ajouter au panier</button>
-        </div>
-        <!-- Ajoutez d'autres produits ici -->
     </div>
 </body>
 </html>
-
