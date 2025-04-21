@@ -1,1 +1,123 @@
-site en maintenance
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women's Heaven - Boutique en Ligne</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffefba, #ffffff);
+            animation: gradientBG 6s infinite alternate;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background: linear-gradient(135deg, #ffefba, #ffffff); }
+            100% { background: linear-gradient(135deg, #ffd6a5, #ffefba); }
+        }
+
+        header {
+            background-color: #ff69b4;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px;
+            background-color: #ffe6e6;
+            color: #ff69b4;
+        }
+
+        .hero img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .hero button {
+            background-color: #ff69b4;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .product {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            width: 200px;
+        }
+
+        .product img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .product button {
+            background-color: #ff69b4;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Women's Heaven</h1>
+    </header>
+
+    <div class="logo">
+        <img src="votre-logo.png" alt="Logo Women's Heaven">
+    </div>
+
+    <div class="hero">
+        <h2>Exprimez votre style</h2>
+        <p>Découvrez notre collection de vêtements et accessoires pour toutes les occasions.</p>
+        <img src="votre-image.jpg" alt="Femme en tenue rose">
+        <button>Découvrir les collections</button>
+    </div>
+
+    <div class="products">
+        <div class="product">
+            <img src="claquettes.jpg" alt="Claquettes épaisse beige">
+            <h3>Claquettes épaisse beige</h3>
+            <button>Ajouter au panier</button>
+        </div>
+        <div class="product">
+            <img src="violetta.jpg" alt="Violetta">
+            <h3>Violetta</h3>
+            <button>Ajouter au panier</button>
+        </div>
+        <!-- Ajoutez d'autres produits ici -->
+    </div>
+</body>
+</html>
+
